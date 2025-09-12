@@ -308,6 +308,43 @@ async def update_user(user_id: str, user_update: UserUpdate, current_user: User 
     updated_user = await db.users.find_one({"id": user_id})
     return User(**updated_user)
 
+@api_router.delete("/users/{user_id}")
+async def delete_user(user_id: str, current_user: User = Depends(require_role([UserRole.ADMIN]))):
+    """Delete user (admin only)"""
+    # Prevent admin from deleting themselves
+    if current_user.id == user_id:
+        raise HTTPException(status_code=400, detail="Cannot delete your own account")
+    
+    # Check if user exists
+    user_to_delete = await db.users.find_one({"id": user_id})
+    if not user_to_delete:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Delete user from database
+    await db.users.delete_one({"id": user_id})
+    
+    # Also delete their sessions
+    await db.sessions.delete_many({"user_id": user_id})
+    
+    # Update any assigned jobs to unassigned status
+    await db.jobs.update_many(
+        {"assigned_driver_id": user_id},
+        {"$set": {
+            "status": JobStatus.AVAILABLE,
+            "assigned_driver_id": None,
+            "assigned_driver_name": None,
+            "assigned_at": None
+        }}
+    )
+    
+    # Remove from event participants
+    await db.events.update_many(
+        {"participants": user_id},
+        {"$pull": {"participants": user_id}}
+    )
+    
+    return {"message": f"User {user_to_delete['name']} has been successfully removed from the system"}
+
 # Job management endpoints
 @api_router.get("/jobs", response_model=List[Job])
 async def get_jobs(status: Optional[JobStatus] = None, current_user: User = Depends(require_auth)):
