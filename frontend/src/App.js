@@ -937,104 +937,318 @@ const ManagementPage = () => {
 
         {/* Content */}
         {activeTab === 'users' && (
-          <div className="bg-gray-800 rounded-lg border border-green-500/30 overflow-hidden">
-            <div className="p-6 border-b border-gray-700">
-              <h2 className="text-xl font-bold text-white">Company Drivers</h2>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-700">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Driver</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Role</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">XP</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Deliveries</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Distance</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Last Active</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-700">
-                  {users.map((driver) => (
-                    <tr key={driver.id}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          {driver.picture && (
-                            <img src={driver.picture} alt="" className="w-8 h-8 rounded-full mr-3" />
-                          )}
-                          <div>
-                            <div className="text-sm font-medium text-white">{driver.name}</div>
-                            <div className="text-sm text-gray-400">{driver.email}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full capitalize ${
-                          driver.role === 'admin' ? 'bg-red-900 text-red-400' :
-                          driver.role === 'manager' ? 'bg-blue-900 text-blue-400' :
-                          'bg-green-900 text-green-400'
-                        }`}>
-                          {driver.role}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{driver.experience_points}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{driver.total_deliveries}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{Math.round(driver.total_distance)} km</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                        {new Date(driver.last_active).toLocaleDateString()}
-                      </td>
+          <div className="space-y-6">
+            <div className="bg-gray-800 rounded-lg border border-green-500/30 overflow-hidden">
+              <div className="p-6 border-b border-gray-700">
+                <h2 className="text-xl font-bold text-white">Company Drivers</h2>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-700">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Driver</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Role</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">XP</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Deliveries</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Distance</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-gray-700">
+                    {users.map((driver) => (
+                      <tr key={driver.id}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            {driver.picture && (
+                              <img src={driver.picture} alt="" className="w-8 h-8 rounded-full mr-3" />
+                            )}
+                            <div>
+                              <div className="text-sm font-medium text-white">{driver.name}</div>
+                              <div className="text-sm text-gray-400">{driver.email}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <select 
+                            value={driver.role}
+                            onChange={(e) => updateUserRole(driver.id, e.target.value)}
+                            className="bg-gray-700 border border-gray-600 text-white text-sm rounded px-2 py-1"
+                          >
+                            <option value="driver">Driver</option>
+                            <option value="manager">Manager</option>
+                            <option value="admin">Admin</option>
+                          </select>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{driver.experience_points}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{driver.total_deliveries}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{Math.round(driver.total_distance)} km</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <button 
+                            className="text-green-400 hover:text-green-300 mr-3"
+                            onClick={() => {/* View driver details */}}
+                          >
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}
 
         {activeTab === 'jobs' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {jobs.map((job) => (
-              <div key={job.id} className="bg-gray-800 rounded-lg border border-green-500/30 p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold text-white">{job.title}</h3>
-                  <span className={`text-xs px-2 py-1 rounded capitalize ${
-                    job.status === 'available' ? 'bg-green-900 text-green-400' :
-                    job.status === 'assigned' ? 'bg-yellow-900 text-yellow-400' :
-                    job.status === 'delivered' ? 'bg-blue-900 text-blue-400' :
-                    'bg-gray-700 text-gray-400'
-                  }`}>
-                    {job.status}
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-gray-300 text-sm">{job.origin_city} → {job.destination_city}</p>
-                  <p className="text-gray-300 text-sm">{job.distance} km • {job.reward} XP</p>
-                  {job.assigned_driver_name && (
-                    <p className="text-gray-300 text-sm">Driver: {job.assigned_driver_name}</p>
-                  )}
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-white">Job Management</h2>
+              <button 
+                onClick={() => setShowCreateJob(true)}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium"
+              >
+                Create New Job
+              </button>
+            </div>
+
+            {/* Create Job Modal */}
+            {showCreateJob && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-gray-800 rounded-lg p-6 w-full max-w-2xl mx-4 border border-green-500/30">
+                  <h3 className="text-xl font-bold text-white mb-4">Create New Job</h3>
+                  <form onSubmit={createJob} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <input
+                        type="text"
+                        placeholder="Job Title"
+                        value={newJob.title}
+                        onChange={(e) => setNewJob({...newJob, title: e.target.value})}
+                        className="bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded"
+                        required
+                      />
+                      <input
+                        type="text"
+                        placeholder="Cargo Type"
+                        value={newJob.cargo}
+                        onChange={(e) => setNewJob({...newJob, cargo: e.target.value})}
+                        className="bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded"
+                        required
+                      />
+                      <input
+                        type="text"
+                        placeholder="Origin City"
+                        value={newJob.origin_city}
+                        onChange={(e) => setNewJob({...newJob, origin_city: e.target.value})}
+                        className="bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded"
+                        required
+                      />
+                      <input
+                        type="text"
+                        placeholder="Destination City"
+                        value={newJob.destination_city}
+                        onChange={(e) => setNewJob({...newJob, destination_city: e.target.value})}
+                        className="bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded"
+                        required
+                      />
+                      <input
+                        type="number"
+                        placeholder="Distance (km)"
+                        value={newJob.distance}
+                        onChange={(e) => setNewJob({...newJob, distance: e.target.value})}
+                        className="bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded"
+                        required
+                      />
+                      <input
+                        type="number"
+                        placeholder="Reward (XP)"
+                        value={newJob.reward}
+                        onChange={(e) => setNewJob({...newJob, reward: e.target.value})}
+                        className="bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded"
+                        required
+                      />
+                      <select
+                        value={newJob.difficulty}
+                        onChange={(e) => setNewJob({...newJob, difficulty: e.target.value})}
+                        className="bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded"
+                      >
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                      </select>
+                    </div>
+                    <textarea
+                      placeholder="Job Description"
+                      value={newJob.description}
+                      onChange={(e) => setNewJob({...newJob, description: e.target.value})}
+                      className="w-full bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded h-24"
+                      required
+                    />
+                    <div className="flex justify-end space-x-3">
+                      <button 
+                        type="button"
+                        onClick={() => setShowCreateJob(false)}
+                        className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded"
+                      >
+                        Cancel
+                      </button>
+                      <button 
+                        type="submit"
+                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+                      >
+                        Create Job
+                      </button>
+                    </div>
+                  </form>
                 </div>
               </div>
-            ))}
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {jobs.map((job) => (
+                <div key={job.id} className="bg-gray-800 rounded-lg border border-green-500/30 p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-bold text-white">{job.title}</h3>
+                    <span className={`text-xs px-2 py-1 rounded capitalize ${
+                      job.status === 'available' ? 'bg-green-900 text-green-400' :
+                      job.status === 'assigned' ? 'bg-yellow-900 text-yellow-400' :
+                      job.status === 'delivered' ? 'bg-blue-900 text-blue-400' :
+                      'bg-gray-700 text-gray-400'
+                    }`}>
+                      {job.status}
+                    </span>
+                  </div>
+                  <div className="space-y-2 mb-4">
+                    <p className="text-gray-300 text-sm">{job.origin_city} → {job.destination_city}</p>
+                    <p className="text-gray-300 text-sm">{job.distance} km • {job.reward} XP</p>
+                    {job.assigned_driver_name && (
+                      <p className="text-gray-300 text-sm">Driver: {job.assigned_driver_name}</p>
+                    )}
+                  </div>
+                  {job.status === 'available' && (
+                    <select 
+                      onChange={(e) => e.target.value && assignJob(job.id, e.target.value)}
+                      className="w-full bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded text-sm"
+                      defaultValue=""
+                    >
+                      <option value="">Assign to Driver</option>
+                      {users.filter(u => u.role === 'driver' || u.role === 'manager').map(driver => (
+                        <option key={driver.id} value={driver.id}>{driver.name}</option>
+                      ))}
+                    </select>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
         {activeTab === 'events' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {events.map((event) => (
-              <div key={event.id} className="bg-gray-800 rounded-lg border border-green-500/30 p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold text-white">{event.title}</h3>
-                  <span className="text-xs bg-green-900 text-green-400 px-2 py-1 rounded capitalize">
-                    {event.event_type}
-                  </span>
-                </div>
-                <p className="text-gray-300 mb-4">{event.description}</p>
-                <div className="space-y-2">
-                  <p className="text-gray-300 text-sm">Date: {new Date(event.date_time).toLocaleString()}</p>
-                  <p className="text-gray-300 text-sm">Location: {event.location}</p>
-                  <p className="text-gray-300 text-sm">Participants: {event.participants.length}</p>
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-white">Event Management</h2>
+              <button 
+                onClick={() => setShowCreateEvent(true)}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium"
+              >
+                Create New Event
+              </button>
+            </div>
+
+            {/* Create Event Modal */}
+            {showCreateEvent && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-gray-800 rounded-lg p-6 w-full max-w-2xl mx-4 border border-green-500/30">
+                  <h3 className="text-xl font-bold text-white mb-4">Create New Event</h3>
+                  <form onSubmit={createEvent} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <input
+                        type="text"
+                        placeholder="Event Title"
+                        value={newEvent.title}
+                        onChange={(e) => setNewEvent({...newEvent, title: e.target.value})}
+                        className="bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded"
+                        required
+                      />
+                      <select
+                        value={newEvent.event_type}
+                        onChange={(e) => setNewEvent({...newEvent, event_type: e.target.value})}
+                        className="bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded"
+                      >
+                        <option value="convoy">Convoy</option>
+                        <option value="meeting">Meeting</option>
+                        <option value="training">Training</option>
+                        <option value="competition">Competition</option>
+                      </select>
+                      <input
+                        type="datetime-local"
+                        value={newEvent.date_time}
+                        onChange={(e) => setNewEvent({...newEvent, date_time: e.target.value})}
+                        className="bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded"
+                        required
+                      />
+                      <input
+                        type="text"
+                        placeholder="Location/Route"
+                        value={newEvent.location}
+                        onChange={(e) => setNewEvent({...newEvent, location: e.target.value})}
+                        className="bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded"
+                        required
+                      />
+                      <input
+                        type="number"
+                        placeholder="Max Participants (optional)"
+                        value={newEvent.max_participants}
+                        onChange={(e) => setNewEvent({...newEvent, max_participants: e.target.value})}
+                        className="bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded"
+                      />
+                    </div>
+                    <textarea
+                      placeholder="Event Description"
+                      value={newEvent.description}
+                      onChange={(e) => setNewEvent({...newEvent, description: e.target.value})}
+                      className="w-full bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded h-24"
+                      required
+                    />
+                    <div className="flex justify-end space-x-3">
+                      <button 
+                        type="button"
+                        onClick={() => setShowCreateEvent(false)}
+                        className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded"
+                      >
+                        Cancel
+                      </button>
+                      <button 
+                        type="submit"
+                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+                      >
+                        Create Event
+                      </button>
+                    </div>
+                  </form>
                 </div>
               </div>
-            ))}
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {events.map((event) => (
+                <div key={event.id} className="bg-gray-800 rounded-lg border border-green-500/30 p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-bold text-white">{event.title}</h3>
+                    <span className="text-xs bg-green-900 text-green-400 px-2 py-1 rounded capitalize">
+                      {event.event_type}
+                    </span>
+                  </div>
+                  <p className="text-gray-300 mb-4">{event.description}</p>
+                  <div className="space-y-2">
+                    <p className="text-gray-300 text-sm">Date: {new Date(event.date_time).toLocaleString()}</p>
+                    <p className="text-gray-300 text-sm">Location: {event.location}</p>
+                    <p className="text-gray-300 text-sm">Participants: {event.participants.length}
+                      {event.max_participants && ` / ${event.max_participants}`}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
