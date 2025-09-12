@@ -874,6 +874,30 @@ const ManagementPage = () => {
       setUsers(usersRes.data);
     } catch (error) {
       console.error('Error updating user role:', error);
+      alert('Error updating user role');
+    }
+  };
+
+  const deleteUser = async (userId, userName) => {
+    // Confirm deletion
+    if (!window.confirm(`Are you sure you want to remove ${userName} from AURA? This action cannot be undone.\n\nThis will:\n- Remove them from all events\n- Unassign their active jobs\n- Delete their account permanently`)) {
+      return;
+    }
+    
+    try {
+      const response = await axios.delete(`${API}/users/${userId}`, { withCredentials: true });
+      alert(response.data.message);
+      
+      // Refresh users list
+      const usersRes = await axios.get(`${API}/users`, { withCredentials: true });
+      setUsers(usersRes.data);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      if (error.response?.data?.detail) {
+        alert(`Error: ${error.response.data.detail}`);
+      } else {
+        alert('Error removing user');
+      }
     }
   };
 
