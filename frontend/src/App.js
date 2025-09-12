@@ -1261,6 +1261,144 @@ const ManagementPage = () => {
             </div>
           </div>
         )}
+
+        {activeTab === 'trucky' && (
+          <div className="space-y-6">
+            <div className="bg-gray-800 rounded-lg border border-green-500/30 p-8">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-white mb-4">Trucky Integration</h2>
+                <p className="text-gray-300">Connect your AURA VTC with Trucky for real ETS2/ATS job tracking</p>
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Integration Setup */}
+                <div className="space-y-6">
+                  <h3 className="text-xl font-semibold text-white">Setup Integration</h3>
+                  
+                  <div className="bg-gray-700 rounded-lg p-6">
+                    <h4 className="font-semibold text-white mb-3">Step 1: Create Trucky VTC</h4>
+                    <p className="text-gray-300 text-sm mb-4">
+                      First, create your virtual trucking company on Trucky:
+                    </p>
+                    <a 
+                      href="https://hub.truckyapp.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
+                    >
+                      Open Trucky Hub
+                    </a>
+                  </div>
+
+                  <div className="bg-gray-700 rounded-lg p-6">
+                    <h4 className="font-semibold text-white mb-3">Step 2: Get API Token</h4>
+                    <p className="text-gray-300 text-sm mb-4">
+                      Generate an API token from your Trucky VTC settings:
+                    </p>
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        placeholder="Enter Trucky API Token"
+                        className="w-full bg-gray-600 border border-gray-500 text-white px-3 py-2 rounded"
+                      />
+                      <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">
+                        Save Token
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-700 rounded-lg p-6">
+                    <h4 className="font-semibold text-white mb-3">Step 3: Configure Webhooks</h4>
+                    <p className="text-gray-300 text-sm mb-4">
+                      Add this webhook URL to your Trucky VTC:
+                    </p>
+                    <div className="bg-gray-600 p-3 rounded text-xs text-white font-mono">
+                      https://road-masters-5.preview.emergentagent.com/api/trucky/webhook
+                    </div>
+                  </div>
+                </div>
+
+                {/* Benefits & Features */}
+                <div className="space-y-6">
+                  <h3 className="text-xl font-semibold text-white">Integration Benefits</h3>
+                  
+                  <div className="space-y-4">
+                    <div className="bg-gray-700 rounded-lg p-4">
+                      <div className="flex items-center mb-2">
+                        <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                          <svg className="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <h4 className="font-semibold text-white">Real-time Job Tracking</h4>
+                      </div>
+                      <p className="text-gray-300 text-sm">
+                        Automatically sync job progress from ETS2/ATS to your AURA dashboard
+                      </p>
+                    </div>
+
+                    <div className="bg-gray-700 rounded-lg p-4">
+                      <div className="flex items-center mb-2">
+                        <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                          <svg className="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <h4 className="font-semibold text-white">Automatic XP/Stats</h4>
+                      </div>
+                      <p className="text-gray-300 text-sm">
+                        Driver stats update automatically based on completed deliveries
+                      </p>
+                    </div>
+
+                    <div className="bg-gray-700 rounded-lg p-4">
+                      <div className="flex items-center mb-2">
+                        <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                          <svg className="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <h4 className="font-semibold text-white">Live Driver Status</h4>
+                      </div>
+                      <p className="text-gray-300 text-sm">
+                        See which drivers are online and active in ETS2/ATS
+                      </p>
+                    </div>
+
+                    <div className="bg-gray-700 rounded-lg p-4">
+                      <div className="flex items-center mb-2">
+                        <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                          <svg className="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <h4 className="font-semibold text-white">Convoy Coordination</h4>
+                      </div>
+                      <p className="text-gray-300 text-sm">
+                        Coordinate convoys between AURA and Trucky platforms
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4">
+                    <h4 className="font-semibold text-white mb-2">Need Help?</h4>
+                    <p className="text-gray-300 text-sm mb-3">
+                      Check out the Trucky documentation for detailed setup instructions:
+                    </p>
+                    <a 
+                      href="https://truckyapp.com/kb/vtc-hub-api-and-external-drivers-hub-integration/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-blue-400 hover:text-blue-300 text-sm underline"
+                    >
+                      Trucky Integration Guide
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
