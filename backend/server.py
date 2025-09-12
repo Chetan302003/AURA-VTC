@@ -184,7 +184,7 @@ async def require_auth(current_user: User = Depends(get_current_user)) -> User:
         raise HTTPException(status_code=401, detail="Authentication required")
     return current_user
 
-async def require_role(allowed_roles: List[UserRole]):
+def require_role(allowed_roles: List[UserRole]):
     """Create dependency to require specific roles"""
     async def role_checker(current_user: User = Depends(require_auth)) -> User:
         if current_user.role not in allowed_roles:
