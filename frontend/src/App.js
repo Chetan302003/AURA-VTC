@@ -1018,14 +1018,32 @@ const ManagementPage = () => {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{driver.experience_points}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{driver.total_deliveries}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{Math.round(driver.total_distance)} km</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">
-                          <button 
-                            className="text-green-400 hover:text-green-300 mr-3"
-                            onClick={() => {/* View driver details */}}
-                          >
-                            View
-                          </button>
-                        </td>
+                        {user?.role === 'admin' && (
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">
+                            <div className="flex space-x-2">
+                              <button 
+                                className="text-green-400 hover:text-green-300"
+                                onClick={() => {/* View driver details - could be implemented later */}}
+                                title="View Details"
+                              >
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                  <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                                </svg>
+                              </button>
+                              <button 
+                                className="text-red-400 hover:text-red-300"
+                                onClick={() => deleteUser(driver.id, driver.name)}
+                                title="Remove Driver"
+                              >
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clipRule="evenodd" />
+                                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                </svg>
+                              </button>
+                            </div>
+                          </td>
+                        )}
                       </tr>
                     ))}
                   </tbody>
