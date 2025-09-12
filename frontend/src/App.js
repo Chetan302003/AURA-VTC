@@ -767,6 +767,26 @@ const ManagementPage = () => {
   const [users, setUsers] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [events, setEvents] = useState([]);
+  const [showCreateJob, setShowCreateJob] = useState(false);
+  const [showCreateEvent, setShowCreateEvent] = useState(false);
+  const [newJob, setNewJob] = useState({
+    title: '',
+    description: '',
+    cargo: '',
+    origin_city: '',
+    destination_city: '',
+    distance: '',
+    reward: '',
+    difficulty: 'Easy'
+  });
+  const [newEvent, setNewEvent] = useState({
+    title: '',
+    description: '',
+    event_type: 'convoy',
+    date_time: '',
+    location: '',
+    max_participants: ''
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -787,6 +807,86 @@ const ManagementPage = () => {
 
     fetchData();
   }, []);
+
+  const createJob = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${API}/jobs`, {
+        ...newJob,
+        distance: parseFloat(newJob.distance),
+        reward: parseInt(newJob.reward)
+      }, { withCredentials: true });
+      
+      // Refresh data
+      const jobsRes = await axios.get(`${API}/jobs`, { withCredentials: true });
+      setJobs(jobsRes.data);
+      
+      // Reset form
+      setNewJob({
+        title: '',
+        description: '',
+        cargo: '',
+        origin_city: '',
+        destination_city: '',
+        distance: '',
+        reward: '',
+        difficulty: 'Easy'
+      });
+      setShowCreateJob(false);
+    } catch (error) {
+      console.error('Error creating job:', error);
+    }
+  };
+
+  const createEvent = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${API}/events`, {
+        ...newEvent,
+        date_time: new Date(newEvent.date_time).toISOString(),
+        max_participants: newEvent.max_participants ? parseInt(newEvent.max_participants) : null
+      }, { withCredentials: true });
+      
+      // Refresh data
+      const eventsRes = await axios.get(`${API}/events`, { withCredentials: true });
+      setEvents(eventsRes.data);
+      
+      // Reset form
+      setNewEvent({
+        title: '',
+        description: '',
+        event_type: 'convoy',
+        date_time: '',
+        location: '',
+        max_participants: ''
+      });
+      setShowCreateEvent(false);
+    } catch (error) {
+      console.error('Error creating event:', error);
+    }
+  };
+
+  const updateUserRole = async (userId, newRole) => {
+    try {
+      await axios.put(`${API}/users/${userId}`, { role: newRole }, { withCredentials: true });
+      // Refresh users
+      const usersRes = await axios.get(`${API}/users`, { withCredentials: true });
+      setUsers(usersRes.data);
+    } catch (error) {
+      console.error('Error updating user role:', error);
+    }
+  };
+
+  const assignJob = async (jobId, driverId) => {
+    try {
+      await axios.post(`${API}/jobs/${jobId}/assign/${driverId}`, {}, { withCredentials: true });
+      // Refresh jobs
+      const jobsRes = await axios.get(`${API}/jobs`, { withCredentials: true });
+      setJobs(jobsRes.data);
+    } catch (error) {
+      console.error('Error assigning job:', error);
+    }
+  };
 
   if (user?.role !== 'manager' && user?.role !== 'admin') {
     return <Navigate to="/dashboard" replace />;
