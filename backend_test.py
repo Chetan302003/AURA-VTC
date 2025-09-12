@@ -681,7 +681,14 @@ class AuraAPITester:
             self.test_job_endpoints_structure,
             self.test_event_endpoints_structure,
             self.test_cors_headers,
-            self.test_api_error_handling
+            self.test_api_error_handling,
+            # User deletion functionality tests
+            self.test_user_deletion_admin_only_access,
+            self.test_user_deletion_endpoint_structure,
+            self.test_user_deletion_self_prevention,
+            self.test_user_deletion_data_cleanup_structure,
+            self.test_user_deletion_permission_boundaries,
+            self.test_user_deletion_edge_cases
         ]
         
         for test_method in test_methods:
